@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✨ 𝒪𝓊𝓇 𝒮𝓅ℯ𝒸𝒾𝒶𝓁 𝒲ℴ𝓇𝓁𝒹 ✨</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-neon: #ff2a74;
+      --secondary-neon: #ff75a0;
+      --accent-purple: #8a2be2;
+      --cyan-glow: #00f3ff;
+      --gold-glow: #ffd700;
+      --dark-bg-1: #09030c;
+      --dark-bg-2: #17071e;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 117, 160, 0.25);
+      --font-main: 'Tajawal', sans-serif;
+      --font-title: 'Amiri', serif;
+      --font-ruqaa: 'Aref Ruqaa', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--dark-bg-1);
+      color: #ffffff;
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* تأثيرات الفراشات على الحواف */
+    .butterfly-decor {
+      position: fixed;
+      font-size: 1.8rem;
+      color: var(--secondary-neon);
+      filter: drop-shadow(0 0 10px var(--primary-neon));
+      z-index: 5;
+      animation: floatButterfly 4s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    .b-1 { top: 20px; left: 20px; animation-delay: 0s; }
+    .b-2 { top: 20px; right: 20px; animation-delay: 1s; }
+    .b-3 { bottom: 20px; left: 20px; animation-delay: 2s; }
+    .b-4 { bottom: 20px; right: 20px; animation-delay: 1.5s; }
+
+    @keyframes floatButterfly {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-15px) rotate(10deg); }
+    }
+
+    /* شاشة القفل */
+    #lock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: radial-gradient(circle at center, var(--dark-bg-2) 0%, var(--dark-bg-1) 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 1;
+      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
+    }
+
+    #lock-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .lock-card-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .lock-card {
+      position: relative;
+      background: rgba(18, 7, 26, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 45px 35px;
+      text-align: center;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 42, 116, 0.2);
+    }
+
+    .lock-avatar {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-neon), var(--accent-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: #fff;
+      box-shadow: 0 0 25px var(--primary-neon);
+      animation: pulseGlow 2.5s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px var(--primary-neon); transform: scale(1); }
+      100% { box-shadow: 0 0 35px var(--cyan-glow); transform: scale(1.06); }
+    }
+
+    .lock-title {
+      font-family: var(--font-ruqaa);
+      font-size: 2.3rem;
+      color: #fff;
+      margin-bottom: 8px;
+      text-shadow: 0 0 12px var(--secondary-neon);
+    }
+
+    .lock-subtitle {
+      font-size: 0.95rem;
+      color: #c9a9d6;
+      margin-bottom: 30px;
+    }
+
+    .pass-input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .pass-input-group input {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 117, 160, 0.3);
+      background: rgba(5, 2, 8, 0.7);
+      color: #fff;
+      font-size: 1.5rem;
+      text-align: center;
+      letter-spacing: 6px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .pass-input-group input:focus {
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+    }
+
+    .btn-unlock {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(45deg, var(--primary-neon), var(--secondary-neon), var(--accent-purple));
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(255, 42, 116, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .btn-unlock:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(255, 42, 116, 0.7);
+    }
+
+    .error-hint {
+      color: #ff4d6d;
+      font-size: 0.9rem;
+      margin-top: 15px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .error-hint.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* المحتوى الرئيسي */
+    #main-container {
+      position: relative;
+      z-index: 2;
+      display: none;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 100px;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+
+    #main-container.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .hero-header {
+      text-align: center;
+      padding: 50px 20px 30px;
+    }
+
+    .fancy-title {
+      font-family: var(--font-ruqaa);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      background: linear-gradient(45deg, #ffffff, var(--secondary-neon), var(--cyan-glow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 15px;
+    }
+
+    .decorated-names {
+      font-family: var(--font-title);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--gold-glow);
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      text-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    .heart-icon-beat {
+      color: var(--primary-neon);
+      animation: heartBeat 1.2s infinite ease-in-out;
+      font-size: 2rem;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.35); }
+    }
+
+    .forever-together-banner {
+      margin: 25px auto;
+      text-align: center;
+      font-family: var(--font-ruqaa);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      color: var(--primary-neon);
+      text-shadow: 0 0 15px var(--primary-neon), 0 0 30px var(--secondary-neon);
+      letter-spacing: 2px;
+      animation: pulseText 2s infinite alternate;
+    }
+
+    @keyframes pulseText {
+      0% { text-shadow: 0 0 10px var(--primary-neon); transform: scale(1); }
+      100% { text-shadow: 0 0 25px var(--cyan-glow), 0 0 35px var(--primary-neon); transform: scale(1.03); }
+    }
+
+    .floating-quote-box {
+      margin: 20px auto 40px;
+      max-width: 650px;
+      padding: 20px;
+      background: var(--glass-bg);
+      border: 1px dashed var(--secondary-neon);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      font-size: 1.15rem;
+      color: #e6c2f0;
+      text-align: center;
+    }
+
+    /* العداد الزمني من تاريخ 19/10/2026 */
+    .timer-section-card {
+      background: rgba(20, 8, 32, 0.75);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 40px 20px;
+      text-align: center;
+      margin: 50px 0;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(255, 42, 116, 0.1);
+      backdrop-filter: blur(15px);
+    }
+
+    .timer-title {
+      font-family: var(--font-title);
+      font-size: 2.2rem;
+      color: var(--gold-glow);
+      margin-bottom: 25px;
+      text-shadow: 0 0 12px var(--gold-glow);
+    }
+
+    .timer-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .timer-box {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--cyan-glow);
+      border-radius: 20px;
+      padding: 20px 15px;
+      min-width: 110px;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+    }
+
+    .timer-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .timer-label {
+      font-size: 0.9rem;
+      color: #bbb;
+      margin-top: 5px;
+    }
+
+    /* معرض الصور الأربع بجانب بعضها البعض بشكل أفقي ومميز (Flexbox / Grid أفقي) */
+    .section-wrapper {
+      margin-top: 60px;
+    }
+
+    .section-header-title {
+      font-family: var(--font-title);
+      font-size: 2.3rem;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 40px;
+      text-shadow: 0 0 15px rgba(255, 117, 160, 0.4);
+    }
+
+    .horizontal-photos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* عرض الصور بجانب بعضها 4 في صف واحد للشاشات الكبيرة */
+      gap: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .horizontal-photos-grid {
+        grid-template-columns: repeat(2, 1fr); /* صورتين بجانب بعض للشاشات المتوسطة */
+      }
+    }
+
+    @media (max-width: 600px) {
+      .horizontal-photos-grid {
+        grid-template-columns: 1fr; /* صورة واحدة للهواتف الصغيرة */
+      }
+    }
+
+    .neumorphic-card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(25, 10, 38, 0.9), rgba(12, 4, 20, 0.95));
+      border-radius: 25px;
+      padding: 12px;
+      box-shadow: 12px 12px 25px rgba(0, 0, 0, 0.7),
+                  -8px -8px 25px rgba(255, 42, 116, 0.08),
+                  inset 0 0 12px rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 117, 160, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .neumorphic-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      border-color: var(--cyan-glow);
+      box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 243, 255, 0.3);
+    }
+
+    .media-inner-wrapper {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: inset 0 8px 15px rgba(0,0,0,0.6);
+    }
+
+    .neumorphic-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .neumorphic-card:hover img {
+      transform: scale(1.06);
+    }
+
+    .media-badge-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(10, 4, 16, 0.75);
+      backdrop-filter: blur(10px);
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      color: var(--secondary-neon);
+      border: 1px solid rgba(255, 117, 160, 0.3);
+      z-index: 2;
+    }
+
+    /* الرسائل العاطفية */
+    .letters-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .fancy-letter-card {
+      background: rgba(20, 8, 30, 0.65);
+      backdrop-filter: blur(15px);
+      border-right: 5px solid var(--primary-neon);
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      border-left: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 35px;
+      line-height: 2.1;
+      font-size: 1.15rem;
+      color: #f3e5f5;
+    }
+
+    .fancy-letter-card strong {
+      font-family: var(--font-title);
+      font-size: 1.5rem;
+      color: var(--secondary-neon);
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    /* قسم زر اضغطي هنا والعبارة المزخرفة */
+    .reveal-section {
+      text-align: center;
+      margin-top: 60px;
+      padding: 30px;
+      background: rgba(20, 8, 30, 0.5);
+      border-radius: 30px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+    }
+
+    .neumorphic-reveal-btn {
+      padding: 16px 45px;
+      font-size: 1.25rem;
+      font-family: var(--font-title);
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(145deg, #ff2a74, #8a2be2);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.6),
+                  -5px -5px 15px rgba(255, 42, 116, 0.3),
+                  0 0 20px var(--primary-neon);
+      transition: all 0.3s ease;
+    }
+
+    .neumorphic-reveal-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 12px 12px 25px rgba(0,0,0,0.8), 0 0 30px var(--cyan-glow);
+    }
+
+    .hidden-love-message {
+      margin-top: 25px;
+      font-family: var(--font-ruqaa);
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      color: var(--gold-glow);
+      text-shadow: 0 0 20px var(--gold-glow), 0 0 35px var(--primary-neon);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+      display: none;
+    }
+
+    .hidden-love-message.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      animation: messageGlow 2s infinite alternate;
+    }
+
+    @keyframes messageGlow {
+      0% { text-shadow: 0 0 15px var(--gold-glow); }
+      100% { text-shadow: 0 0 30px var(--cyan-glow), 0 0 40px var(--primary-neon); }
+    }
+
+    /* مشغل الصوت */
+    .audio-widget {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      z-index: 999;
+      background: rgba(10, 4, 16, 0.85);
+      border: 1px solid var(--secondary-neon);
+      border-radius: 50px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 0 15px var(--primary-neon);
+    }
+
+    .audio-control-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-neon);
+      border: none;
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: #aaa;
+      font-size: 1.05rem;
+    }
+
+    footer a {
+      color: var(--cyan-glow);
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: var(--primary-neon);
+      text-shadow: 0 0 10px var(--primary-neon);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- أشكال الفراشات السحرية على الحواف -->
+  <div class="butterfly-decor b-1"><i class="fa-solid fa-feather-pointed"></i></div>
+  <div class="butterfly-decor b-2"><i class="fa-solid fa-feather-pointed"></i></div>
+  <div class="butterfly-decor b-3"><i class="fa-solid fa-feather-pointed"></i></div>
+  <div class="butterfly-decor b-4"><i class="fa-solid fa-feather-pointed"></i></div>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <audio id="bg-audio" loop preload="auto">
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- شاشة القفل -->
+  <div id="lock-screen">
+    <div class="lock-card-wrapper">
+      <div class="lock-card">
+        <div class="lock-avatar">
+          <i class="fa-solid fa-heart-lock"></i>
+        </div>
+        <h2 class="lock-title">عالمنا الخاص ✨</h2>
+        <p class="lock-subtitle">أدخلي السر الخاص بدخول عالمنا</p>
+
+        <div class="pass-input-group">
+          <input type="password" id="passInput" placeholder="••••••••••" autocomplete="off">
+        </div>
+
+        <button class="btn-unlock" onclick="validateSecretCode()">دخول عالمنا السحري 💖</button>
+
+        <div id="errorHint" class="error-hint">
+          <i class="fa-solid fa-circle-xmark"></i> الباسورد مش مظبوط يا هنودتي، حاولي تاني ❤️
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- المحتوى الرئيسي -->
+  <div id="main-container">
+    
+    <header class="hero-header">
+      <h1 class="fancy-title">عالمنا الخاص ✨</h1>
+      
+      <div class="decorated-names">
+        <span>« هنودتي »</span>
+        <i class="fa-solid fa-heart heart-icon-beat"></i>
+        <span>« حمودي »</span>
+      </div>
+
+      <div class="forever-together-banner">
+        🔥 « سوا سوا علي الموت » 🔥
+      </div>
+
+      <div class="floating-quote-box" id="quoteBox">
+        « أنتِ كل أسباب سعادتي في هذه الحياة يا هنوده ✨ »
+      </div>
+    </header>
+
+    <!-- العداد الزمني من تاريخ 19/10/2026 -->
+    <section class="timer-section-card">
+      <h2 class="timer-title">إحنا مع بعض من يوم 19/10/2026 ومستمرين للأبد 💍✨</h2>
+      <div class="timer-grid">
+        <div class="timer-box">
+          <div class="timer-number" id="daysNum">00</div>
+          <div class="timer-label">يــــوم</div>
+        </div>
+        <div class="timer-box">
+          <div class="timer-number" id="hoursNum">00</div>
+          <div class="timer-label">ســــاعة</div>
+        </div>
+        <div class="timer-box">
+          <div class="timer-number" id="minsNum">00</div>
+          <div class="timer-label">دقيقـــة</div>
+        </div>
+        <div class="timer-box">
+          <div class="timer-number" id="secsNum">00</div>
+          <div class="timer-label">ثانيـــة</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- معرض الـ 4 صور بجانب بعضها بشكل أفقي نيومورفيزْم -->
+    <section class="section-wrapper">
+      <h2 class="section-header-title">أجمل ذكرياتنا سوا 📸</h2>
+      
+      <div class="horizontal-photos-grid">
+        <!-- صورة 1 -->
+        <div class="neumorphic-card">
+          <span class="media-badge-tag"><i class="fa-solid fa-image"></i> 1</span>
+          <div class="media-inner-wrapper">
+            <img src="photo1.jpg" alt="ذكرياتنا 1" loading="lazy">
+          </div>
+        </div>
+
+        <!-- صورة 2 -->
+        <div class="neumorphic-card">
+          <span class="media-badge-tag"><i class="fa-solid fa-image"></i> 2</span>
+          <div class="media-inner-wrapper">
+            <img src="photo2.jpg" alt="ذكرياتنا 2" loading="lazy">
+          </div>
+        </div>
+
+        <!-- صورة 3 -->
+        <div class="neumorphic-card">
+          <span class="media-badge-tag"><i class="fa-solid fa-image"></i> 3</span>
+          <div class="media-inner-wrapper">
+            <img src="photo3.jpg" alt="ذكرياتنا 3" loading="lazy">
+          </div>
+        </div>
+
+        <!-- صورة 4 -->
+        <div class="neumorphic-card">
+          <span class="media-badge-tag"><i class="fa-solid fa-image"></i> 4</span>
+          <div class="media-inner-wrapper">
+            <img src="photo4.jpg" alt="ذكرياتنا 4" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- الرسائل العاطفية -->
+    <section class="section-wrapper">
+      <h2 class="section-header-title">رسائل من القلب لـ هنودتي 📝❤️</h2>
+
+      <div class="letters-container">
+        <div class="fancy-letter-card">
+          <strong>هنودتي الروح والقلب 🏡❤️</strong>
+          <p>هنودتي الحلوة اللي مالية عليا حياتي، أنا عايزك تعرفي إن وجودك جنبي هو المعنى الحقيقي للسعادة. أنا عمري ما كنت أتخيل إن في يوم ألاقي حد يفهمني بالشكل ده، حد يحس بيا من غير ما أتكلم، وحد يقدر يغير يومي من مجرد كلمة بسيطة منك 🥺💖.</p>
+          <p>كل يوم بشوف فيكي صورة ليا مختلفة بتخليني أحب نفسي وأحب حياتي لأنك معايا. أنتِ مش بس بنت في حياتي، أنتِ أخت وصاحبة وروح وقلب، أنتِ كل حاجة أنا كنت بدور عليها وملاقيتهاش غير معاكي ❤️✨.</p>
+          <p>أنا بحس معاكي إن الدنيا أسهل وبحس إن مفيش مشكلة تقدر توقف قدامي طول ما أنتِ جنبي. بحس إني أقوى مليون مرة لأنك دايماً بتديني الدافع وبترجعيلي طاقتي من جديد 🔥💥.</p>
+          <p>أنتِ معايا بتغيري مفهوم كل حاجة حتى أبسط التفاصيل معاكي ليها طعم مختلف. الضحكة ليها طعم الهزار ليه طعم، حتى السكوت جنبك بيكون أجمل لحظة لأني بحس فيه براحة مش لاقيها في الدنيا كلها 🌹💖.</p>
+          <p>هنودتي أنا عايزك تكوني واثقة مليون في المية إني مش هشوف غيرك. أنتِ بالنسبة لي الكفاية والرضا، أنتِ عيني اللي بشوف بيها الدنيا وأنتِ قلبي اللي بيخلي كل حاجة ليها معنى 🥺💖.</p>
+          <p>أنا مش بحبك عادي، أنا بحبك حب فوق الوصف، حب بيربط روحي بروحك، سوا سوا علي الموت، بيربط كل تفاصيل حياتي بيكي أنتِ حتى غلاوتك عندي مالهاش حدود...</p>
+        </div>
+
+        <div class="fancy-letter-card">
+          <strong>كل مكان أنا بروحه يا هنوده ✨❤️</strong>
+          <p>أنتِ معايا مش محتاجة تلبسي أقنعة ولا تظهري بشكل مختلف لأني بحبك زي ما أنتِ. بحب تفاصيلك كلها، بحب طريقتك وأندفاعك وضحكك وحتى زعلك بحبه لأنه بيبيّن قد إيه أنتِ حقيقية مش بتمثلي ولا بتغيري 🔥💥.</p>
+          <p>أنا عارف إني ساعات ممكن أغلط أو أقصر بس صدقيني قلبي عمره ما فكر غير فيكي! وعيني عمرها ما شافت غيرك، أنتِ الأول والأخير، أنتِ البداية اللي غيرتني والنهاية اللي عمري ما هشوفها لأن مفيش نهاية لحب زي ده 🌹💖.</p>
+          <p>يا هنودي أنا عايزك تعرفي إني بحلم بيوم يجمعنا في بيت صغير مليان بالحب والضحك والونس. نفسي نصحى على بعض ونكمل حياتنا بنفس الروح دي، نفسي أعيش وأموت وأنا في حضن وجودك اللي بيخليني أحس إني مش ناقصني أي حاجة 🥺💖.</p>
+          <p>أنا هفضل طول عمري أحارب عشانك، أحارب عشان تفضلي مبسوطة. أحارب عشان أحافظ عليكي من كل حاجة ممكن تجرحك، أحارب عشان أوريكي قد إيه أنتِ غالية عندي ❤️✨.</p>
+          <p>ربنا يخليكي ليا يا هنوده ويقدرني على حبك زي ما تستاهلي، لأنك أغلى حاجة في حياتي. واللي من غيرك عمري ملوش طعم ولا معنى 🔥💖.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- زر "اضغطي هنا" والعبارة المزخرفة -->
+    <section class="reveal-section">
+      <button class="neumorphic-reveal-btn" onclick="revealLoveMessage()">اضغطي هنا 💖</button>
+      <div id="hiddenMsg" class="hidden-love-message">
+        « بحبك يهنودتي.. بدانا الحلم مع بعض وهننهيه مع بعض » 💍✨
+      </div>
+    </section>
+
+    <footer>
+      مطور الموقع: <a href="https://a07534611-art.github.io/My-website-/" target="_blank" rel="noopener noreferrer">Dev/Ahmed Abdallah</a> 💖
+    </footer>
+
+  </div>
+
+  <div class="audio-widget">
+    <button class="audio-control-btn" onclick="toggleAudio()">
+      <i class="fa-solid fa-pause" id="audioIcon"></i>
+    </button>
+    <div style="font-size: 0.85rem; color: #ddd;">
+      <div style="font-weight: bold; color: var(--secondary-neon);">لحن حبنا الخاص 🎵</div>
+    </div>
+  </div>
+
+  <script>
+    const _secretHash = "MzAvNS8yMDEw"; // Base64 لـ 30/5/2010
+
+    function validateSecretCode() {
+      const inputVal = document.getElementById('passInput').value.trim();
+      const errorHint = document.getElementById('errorHint');
+      const lockScreen = document.getElementById('lock-screen');
+      const mainContainer = document.getElementById('main-container');
+      const audio = document.getElementById('bg-audio');
+
+      if (btoa(inputVal) === _secretHash) {
+        errorHint.classList.remove('show');
+        lockScreen.classList.add('fade-out');
+        
+        setTimeout(() => {
+          lockScreen.style.display = 'none';
+          mainContainer.classList.add('active');
+          window.scrollTo(0, 0);
+          startTimer();
+        }, 800);
+
+        audio.play().catch(e => console.log("Audio autoplay blocked"));
+      } else {
+        errorHint.classList.add('show');
+      }
+    }
+
+    document.getElementById('passInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') validateSecretCode();
+    });
+
+    function revealLoveMessage() {
+      const msg = document.getElementById('hiddenMsg');
+      msg.classList.toggle('show');
+    }
+
+    function startTimer() {
+      const startDate = new Date('2026-10-19T00:00:00');
+
+      setInterval(() => {
+        const now = new Date();
+        const diff = now - startDate;
+
+        if (diff > 0) {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / 1000 / 60) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+
+          document.getElementById('daysNum').textContent = days;
+          document.getElementById('hoursNum').textContent = hours < 10 ? '0' + hours : hours;
+          document.getElementById('minsNum').textContent = minutes < 10 ? '0' + minutes : minutes;
+          document.getElementById('secsNum').textContent = seconds < 10 ? '0' + seconds : seconds;
+        }
+      }, 1000);
+    }
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 3 + 1;
+        this.speedY = Math.random() * 1 + 0.3;
+        this.opacity = Math.random() * 0.7 + 0.3;
+        this.isHeart = Math.random() > 0.5;
+      }
+      update() {
+        this.y -= this.speedY;
+        if (this.y < 0) this.y = height;
+      }
+      draw() {
+        ctx.fillStyle = this.isHeart ? 'rgba(255, 117, 160, ' + this.opacity + ')' : 'rgba(0, 243, 255, ' + this.opacity + ')';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 65; i++) particles.push(new Particle());
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    function toggleAudio() {
+      const audio = document.getElementById('bg-audio');
+      const icon = document.getElementById('audioIcon');
+      if (audio.paused) {
+        audio.play();
+        icon.className = 'fa-solid fa-pause';
+      } else {
+        audio.pause();
+        icon.className = 'fa-solid fa-play';
+      }
+    }
+  </script>
+</body>
+</html>
